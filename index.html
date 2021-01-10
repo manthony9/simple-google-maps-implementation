@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> --<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>My Google Maps</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <style>#map{padding:100px;height:700px;width:50%;margin:auto;}#heading{display:flex;justify-content: center;}</style>
+    </head>
+    <body>
+        <h1 id="heading">A Simple Google Maps API Implementation</h1>
+        <div id="map"></div>
+        <script> 
+        function initMap(){
+
+            //map options
+            var options = {
+                center: {lat: 43.651070, lng:-79.347015},
+                zoom: 6
+            }
+
+            //intialize map
+            var map = new google.maps.Map(document.getElementById('map'),options)
+
+            //click event to put marker on each
+            google.maps.event.addListener(map,'click', function(event){addMarker({coords:event.latLng});});
+            
+
+            //marker object array
+            var markers = [
+                {
+                    coords:{lat: 42.651070, lng:-78.347015},
+                    iconImage: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+                    content: '<h1>Content 1</h1>'
+            
+                },
+                {
+                    coords:{lat: 43.651070, lng:-79.347015},
+                    iconImage: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+                    content: '<h1>Content 2</h1>'
+           
+                },
+                {
+                
+                    coords:{lat: 44.651070, lng:-80.347015},
+                    iconImage: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+                           
+                }
+
+            ]
+
+            markers.forEach(markerLoop);
+            
+            //add markers in the array
+            function markerLoop(marker){
+                addMarker(marker)
+            }
+            
+
+            //add marker procedure
+            function addMarker(props){
+            
+                var marker = new google.maps.Marker({
+                position:props.coords,
+                map:map
+                
+                });
+
+                if(props.iconImage){
+                    marker.setIcon(props.iconImage);
+                }
+
+                if(props.content){
+
+                    var infoWindow = new google.maps.InfoWindow({
+                        content:props.content
+                    });
+
+                    marker.addListener('click', function(){
+                        infoWindow.open(map,marker)
+                    })
+                }
+            
+            }
+        }
+        </script>   
+        <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHTSbiuGAyl9lz7aE8ZMGCCYupDb9CNgA&callback=initMap">
+</script>
+    </body>
+</html>
